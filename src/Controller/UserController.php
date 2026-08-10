@@ -114,6 +114,7 @@ final class UserController extends AbstractController
     #[Route('/ban/{id}', name: 'app_user_ban', methods: ['POST'])]
     public function ban(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
+        
         return $this->redirectToRoute('app_user_list', [], Response::HTTP_SEE_OTHER);
     }
     /** 

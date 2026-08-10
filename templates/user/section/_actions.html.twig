@@ -16,6 +16,7 @@
             <a href="{{ path('app_user_delete', {'id': user.id}) }}" class="btn-outline-red w-fit">Supprimer mon compte</a>
         </div>
     </div>
+    {% if is_granted("ROLE_ADMIN") %}
     <div class="actions-section">
         <span class="actions-title">Administration</span>
         <div class="actions-container">
@@ -23,4 +24,5 @@
             <a href="{{ path('app_category_index') }}" class="btn-outline w-fit">Liste des categories</a>
         </div>
     </div>
+    {% endif %}
 </div>

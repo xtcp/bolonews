@@ -130,7 +130,7 @@ final class ArticleController extends AbstractController
      *  Retour :
      *     Response - Template de la page de modification ou redirection vers la page de l'article si succés
      */
-    #[Route('/{id}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_article_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();

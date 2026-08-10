@@ -35,10 +35,15 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/user, roles: ROLE_USER }
+        - { path: ^/user/delete, roles: ROLE_USER }
         - { path: ^/user/list, roles: ROLE_ADMIN }
         - { path: ^/user/ban, roles: ROLE_ADMIN }
+        - { path: ^/user, roles: ROLE_USER }
         - { path: ^/article/edit, roles: ROLE_USER }
+        - { path: ^/article/new, roles: ROLE_USER }
+        - { path: ^/article/publish, roles: ROLE_USER }
+        - { path: ^/article/like, roles: ROLE_USER }
+        - { path: ^/article/delete, roles: ROLE_USER }
         - { path: ^/categorie, roles: ROLE_ADMIN }
         - { path: ^/comment, roles: ROLE_USER }
 
