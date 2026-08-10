@@ -70,11 +70,13 @@ final class UserController extends AbstractController
     #[Route('/edit/{id}', name: 'app_user_edit', defaults: ['id' => null])]
     public function edit(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, ?int $id = null): Response
     {
-         // Pour eviter l'erreur de l'IDE:
+        // Pour eviter l'erreur de l'IDE:
         /** @var User $user */
 
+        // Verification de l'access d'administrateur si on essaye de modifier un utilisateur specifique
         if ($id && $this->isGranted("ROLE_ADMIN")) {
             $user = $userRepository->find($id);
+        // Sinon on fait l'edition sur le propre utilisateur
         } else {
             $user = $this->getUser();
         }
@@ -86,12 +88,11 @@ final class UserController extends AbstractController
             /** @var string|null $motdepasse */
             $motdepasse = $form->get('password')->getData();
 
+            // On verifie si le mot de passe était changé pour le modifier
             if (!empty($motdepasse)) {
                 $user->setPassword($userPasswordHasher->hashPassword($user, $motdepasse));
             }
             $entityManager->flush();
-
-            // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_user_index');
         }
@@ -112,9 +113,22 @@ final class UserController extends AbstractController
      *     Response - Redirection vers la page de liste d'utilisateurs
      */
     #[Route('/ban/{id}', name: 'app_user_ban', methods: ['POST'])]
-    public function ban(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function ban(Request $request, User $user, UserRepository $userRepository, EntityManagerInterface $entityManager, ?int $id = null): Response
     {
-        
+        // Pour eviter l'erreur de l'IDE:
+        /** @var User $user */
+        if ($id) {
+            $user = $userRepository->find($id);
+            // Verification du token ban pour protection CSRF
+            if ($this->isCsrfTokenValid('ban'.$user->getId(), $request->getPayload()->getString('_token'))) {
+                // Verifier si l'utilisateur connectée a un accés d'administrateur
+                if ($this->isGranted("ROLE_ADMIN")) {
+                    
+                    $user->setBanni($user->isBanni() ? 0 : 1);
+                    $entityManager->flush();
+                }
+            }
+        }
         return $this->redirectToRoute('app_user_list', [], Response::HTTP_SEE_OTHER);
     }
     /** 
@@ -130,10 +144,12 @@ final class UserController extends AbstractController
     #[Route('/delete/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
+        // Verification du token delete pour protection CSRF
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();
         }
+        // Verifier si l'utilisateur connectée a un accés d'administrateur, si oui, on redirectionne vers la liste d'utilisateurs, sinon, vers la page d'accueil
         if ($this->isGranted("ROLE_ADMIN")) {
             return $this->redirectToRoute('app_user_list', [], Response::HTTP_SEE_OTHER);
         } else {

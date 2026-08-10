@@ -1,5 +1,8 @@
 .env
 *.env
+.env.dev
+.env.test
+/.vscode/
 *.lock
 .editorconfig
 ###> symfony/framework-bundle ###

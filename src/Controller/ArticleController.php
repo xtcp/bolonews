@@ -15,6 +15,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\User;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
@@ -49,9 +50,11 @@ final class ArticleController extends AbstractController
     #[Route(name: 'app_article_index', methods: ['GET'])]
     public function index(Request $request, ArticleRepository $articleRepository, CategoryRepository $categoryRepository): Response
     {
+        // Enregistrer les valeus de requete _GET de search et category
         $search = $request->query->get('search');
         $category = $request->query->get('category');
  
+        // Si on a un text pour la recherche ou une categorie, executer la methode correspondante dans le repository
         $articles = ($search || $category)
             ? $articleRepository->search($search, (int)$category)
             : $articleRepository->getLatest(6);
@@ -83,15 +86,18 @@ final class ArticleController extends AbstractController
             if (!$image) {
                 if ($isNew) $form->get("image")->addError(new FormError("l'image est obligatoire!"));
             } else {
+                // Appeler la methode du service imageUploader upload() si nouvelle ou replace() si existante
                 if ($isNew) {
                     $nomImage = $this->imageUploader->upload($image);
                 } else {
                     $nomImage = $this->imageUploader->replace($image, $article->getImage());
                 }
+                // Changer le nom de fichier de l'image avec la valeur retournée par le service imageUploader
                 $article->setImage($nomImage);
             }
 
             if ($form->isValid()) {
+                // Si c'est un nouveau article, appeler la methode persist de EntityManager
                 if ($isNew) $entityManager->persist($article);
                 $entityManager->flush();
 
@@ -117,6 +123,13 @@ final class ArticleController extends AbstractController
     #[Route('/new', name: 'app_article_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, bool $isNew = false): Response
     {
+        // Pour eviter l'erreur de l'IDE:
+        /** @var User $user */
+        $user = $this->getUser();
+        // Verifier si l'utilisateur est bani et bloquer l'accés
+        if ($user->isBanni()) {
+            throw new AccessDeniedHttpException("Vous ne pouvez pas effectuer cette action parce que votre compte est bani");
+        }
         $article = new Article();
         return $this->editCreate($request, $article, $entityManager, true);
     }
@@ -133,7 +146,15 @@ final class ArticleController extends AbstractController
     #[Route('/edit/{id}', name: 'app_article_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
+        // Pour eviter l'erreur de l'IDE:
+        /** @var User $user */
         $user = $this->getUser();
+        // Verifier si l'utilisateur est bani et bloquer l'accés
+        if ($user->isBanni()) {
+            throw new AccessDeniedHttpException("Vous ne pouvez pas effectuer cette action parce que votre compte est bani");
+        }
+
+        // Verifier si l'auteur de l'article est l'utilisateur connectée ou un administrateur
         if ($article->getAuteur() !== $user && !$this->isGranted('ROLE_ADMIN')) {
             throw new AccessDeniedHttpException("Vous n'avez pas des droits pour modifier cet article");
         }
@@ -169,8 +190,16 @@ final class ArticleController extends AbstractController
     #[Route('/delete/{id}', name: 'app_article_delete', methods: ['POST'])]
     public function delete(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
+        // Pour eviter l'erreur de l'IDE:
+        /** @var User $user */
+        $user = $this->getUser();
+        // Verifier si l'utilisateur est bani et bloquer l'accés
+        if ($user->isBanni()) {
+            throw new AccessDeniedHttpException("Vous ne pouvez pas effectuer cette action parce que votre compte est bani");
+        }
+        // Verification du token delete pour protection CSRF
         if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->getPayload()->getString('_token'))) {
-            $user = $this->getUser();
+            // Verifier si l'auteur de l'article est l'utilisateur connectée ou un administrateur
             if ($article->getAuteur() !== $user && !$this->isGranted('ROLE_ADMIN')) {
                 throw new AccessDeniedHttpException("Vous n'avez pas des droits pour effacer cet article");
             }
@@ -192,8 +221,18 @@ final class ArticleController extends AbstractController
     #[Route('/publish/{id}', name: 'app_article_publish', methods: ['POST'])]
     public function publish(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
+        // Pour eviter l'erreur de l'IDE:
+        /** @var User $user */
+        $user = $this->getUser();
+
+        // Verification du token delete pour protection CSRF
         if ($this->isCsrfTokenValid('publish'.$article->getId(), $request->getPayload()->getString('_token'))) {
-            $user = $this->getUser();
+            // Verifier si l'utilisateur est bani et bloquer l'accés
+            if ($user->isBanni()) {
+                throw new AccessDeniedHttpException("Vous ne pouvez pas effectuer cette action parce que votre compte est bani");
+            }
+
+            // Verifier si l'auteur de l'article est l'utilisateur connectée ou un administrateur
             if ($article->getAuteur() !== $user && !$this->isGranted('ROLE_ADMIN')) {
                 throw new AccessDeniedHttpException("Vous n'avez pas des droits pour publier/depublier cet article");
             }
@@ -216,10 +255,18 @@ final class ArticleController extends AbstractController
     #[Route('/like/{id}', name: 'app_article_toggle_like')]
     public function like(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
+        // Enregistrer la route envoye par le formulaire pour la redirection
         $currentRoute = $request->getPayload()->getString('currentRoute');
-    
+        // Pour eviter l'erreur de l'IDE:
+        /** @var User $user */
+        $user = $this->getUser();
+        // Verifier si l'utilisateur est bani et bloquer l'accés
+        if ($user->isBanni()) {
+            throw new AccessDeniedHttpException("Vous ne pouvez pas effectuer cette action parce que votre compte est bani");
+        }
+        // Verification du token delete pour protection CSRF
         if ($this->isCsrfTokenValid('like'.$article->getId(), $request->getPayload()->getString('_token'))) {
-            $user = $this->getUser();
+            // Si l'utilisateur a deja likée, on enléve, sinon, on ajoute
             if ($article->getLikes()->contains($user)) {
                 $article->removeLike($user);
             } else {

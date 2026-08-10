@@ -42,7 +42,7 @@ class RegistrationController extends AbstractController
             /** @var string $motdepasse */
             $motdepasse = $form->get('password')->getData();
 
-            // encode the plain password
+            // hasher le mot de passe
             $user->setPassword($userPasswordHasher->hashPassword($user, $motdepasse));
 
             $entityManager->persist($user);

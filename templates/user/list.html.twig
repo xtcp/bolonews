@@ -11,7 +11,6 @@
         users - La liste des utilisateurs
 
 #}
-{% set banMessage = user.banni ? "débannir" : "bannir" %}
 
 {% extends 'base.html.twig' %}
 
@@ -30,22 +29,24 @@
         </thead>
         <tbody>
         {% for user in users %}
+            {% set banMessage = user.banni ? "débannir" : "bannir" %}
+
             <tr>
                 <td>{{ user.email }}</td>
                 <td>{{ user.pseudo }}</td>
                 <td>
-                    <form method="post" id="delete-form-{{ user.id }}" action="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Vous êtes sur de bien vouloir effacer cette utilisateur?');">
+                    <form class="hidden" method="post" id="delete-form-{{ user.id }}" action="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Vous êtes sur de bien vouloir effacer cette utilisateur?');">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
                     </form>
-                    <form method="post" id="ban-form-{{ article.id }}" action="{{ path('app_user_ban', {'id': user.id}) }}" onsubmit="return confirm('Vous êtes sur de bien vouloir {{ banMessage }} cette utilisateur?');">
+                    <form class="hidden" method="post" id="ban-form-{{ user.id }}" action="{{ path('app_user_ban', {'id': user.id}) }}" onsubmit="return confirm('Vous êtes sur de bien vouloir {{ banMessage }} cette utilisateur?');">
                         <input type="hidden" name="_token" value="{{ csrf_token('ban' ~ user.id) }}">
                     </form>
                     <a href="#"
                 
                 class="">
                     <a class="btn-outline-blue" href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier l'utilisateur</a>
-                    <a class="btn-outline-red" onclick="event.preventDefault(); document.getElementById('delete-form-{{ article.id }}').submit();">Supprimer l'utilisateur</a>
-                    <a class="btn-outline-orange" honclick="event.preventDefault(); document.getElementById('ban-form-{{ article.id }}').submit();">
+                    <a class="btn-outline-red" href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ user.id }}').submit();">Supprimer l'utilisateur</a>
+                    <a class="btn-outline-orange" href="#" onclick="event.preventDefault(); document.getElementById('ban-form-{{ user.id }}').submit();">
                     {% if user.banni %}
                         Débannir l'utilisateur
                     {% else %}

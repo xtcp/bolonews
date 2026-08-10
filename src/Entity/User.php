@@ -60,6 +60,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         minMessage: "Votre pseudo doit contenir au moins {{ limit }} characters",
         maxMessage: "Votre pseudo doit contenir au maximum {{ limit }} characters",
     )]
+    #[Assert\Regex(
+        pattern: "/^[\p{L}\p{M}]+(?:[ '\-][\p{L}\p{M}]+)*$/u",
+        message: 'Votre pseudo ne soit pas contenir des characteres speciaux.'
+    )]
     private ?string $pseudo = null;
 
     #[ORM\Column(length: 255, nullable: true)]

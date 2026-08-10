@@ -10,11 +10,13 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Comment;
+use App\Entity\User;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class CommentController extends AbstractController
@@ -32,10 +34,18 @@ final class CommentController extends AbstractController
     #[Route('/comment/new/{id}', name: 'app_comment_new', methods: ['POST'])]
     public function new(Article $article, Request $request, EntityManagerInterface $entityManager): Response
     {
+        // Pour eviter l'erreur de l'IDE:
+        /** @var User $user */
+        $user = $this->getUser();
+        // Verifier si l'utilisateur est bani et bloquer l'accés
+        if ($user->isBanni()) {
+            throw new AccessDeniedHttpException("Vous ne pouvez pas effectuer cette action parce que votre compte est bani");
+        }
+        // Verification du token comment pour protection CSRF
         if (!$this->isCsrfTokenValid('comment' . $article->getId(), $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF token.');
         }
-        $user = $this->getUser();
+
         if ($user) {
             $comment = new Comment();
             $texte = $request->request->get('texte');
