@@ -39,7 +39,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    #[Assert\NotBlank(message: "Le champ mot de passe ne peut pas être vide.")]
     #[Assert\PasswordStrength(minScore: Assert\PasswordStrength::STRENGTH_WEAK)]
     private ?string $password = null;
 
@@ -75,7 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $image = null;
 
     #[ORM\Column]
-    private ?bool $banni = null;
+    private ?bool $banni = false;
 
     public function __construct()
     {

@@ -36,6 +36,9 @@ class UserType extends AbstractType
                 ],
                 'invalid_message' => 'Les deux mot de passes doit être identiques.',
                 'constraints' => [
+                    new Assert\NotBlank(
+                        message: 'Le champ mot de passe ne peut pas être vide',
+                    ),
                     new Assert\Length(
                         min: 6,
                         minMessage: 'Votre mot de passe doit contenir au moins {{ limit }} characters',

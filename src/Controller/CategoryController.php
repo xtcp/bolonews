@@ -71,7 +71,7 @@ final class CategoryController extends AbstractController
      *  Retour :
      *     Response - Template de la page de modification de categorie ou redirection vers la liste des categories
      */
-    #[Route('/{id}/edit', name: 'app_category_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_category_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Category $category, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(CategoryType::class, $category);
@@ -98,7 +98,7 @@ final class CategoryController extends AbstractController
      *  Retour :
      *     Response - Redirection vers la liste des categories
      */
-    #[Route('/{id}', name: 'app_category_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'app_category_delete', methods: ['POST'])]
     public function delete(Request $request, Category $category, EntityManagerInterface $entityManager): Response
     {
         // Verification du token delete pour protection CSRF

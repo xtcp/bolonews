@@ -31,8 +31,11 @@
                 <td>{{ category.id }}</td>
                 <td>{{ category.libelle }}</td>
                 <td>
+                    <form class="hidden" method="post" id="delete-form-{{ category.id }}" action="{{ path('app_category_delete', {'id': category.id}) }}" onsubmit="return confirm('Vous êtes sur de bien vouloir effacer cette categorie?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+                    </form>
                     <a class="btn-outline-blue" href="{{ path('app_category_edit', {'id': category.id}) }}">Modifier categorie</a>
-                    <a class="btn-outline-red" href="{{ path('app_category_delete', {'id': category.id}) }}">Effacer categorie</a>
+                    <a class="btn-outline-red" href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ category.id }}').requestSubmit();">Effacer categorie</a>
                 </td>
             </tr>
         {% else %}

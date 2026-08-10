@@ -41,12 +41,9 @@
                     <form class="hidden" method="post" id="ban-form-{{ user.id }}" action="{{ path('app_user_ban', {'id': user.id}) }}" onsubmit="return confirm('Vous êtes sur de bien vouloir {{ banMessage }} cette utilisateur?');">
                         <input type="hidden" name="_token" value="{{ csrf_token('ban' ~ user.id) }}">
                     </form>
-                    <a href="#"
-                
-                class="">
                     <a class="btn-outline-blue" href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier l'utilisateur</a>
-                    <a class="btn-outline-red" href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ user.id }}').submit();">Supprimer l'utilisateur</a>
-                    <a class="btn-outline-orange" href="#" onclick="event.preventDefault(); document.getElementById('ban-form-{{ user.id }}').submit();">
+                    <a class="btn-outline-red" href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ user.id }}').requestSubmit();">Supprimer l'utilisateur</a>
+                    <a class="btn-outline-orange" href="#" onclick="event.preventDefault(); document.getElementById('ban-form-{{ user.id }}').requestSubmit();">
                     {% if user.banni %}
                         Débannir l'utilisateur
                     {% else %}
