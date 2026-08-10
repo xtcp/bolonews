@@ -1,0 +1,24 @@
+{#
+    Template: article/edit.html.twig
+    Extends: base_html.twig
+
+    Template pour la page de creation d'un article
+
+    Role:
+        Afficher la page de creation d'un article avec le formulaire et les actions
+
+    Parameters:
+        form - Le formulaire de creation d'article
+
+#}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Créer article{% endblock %}
+
+{% block body %}
+    <h1>Créer un nouveau article</h1>
+
+    {{ include('article/_form.html.twig') }}
+
+    <a class="btn-outline mx-5 mt-4" href="{{ path('app_article_index') }}">Retourner à la liste</a>
+{% endblock %}

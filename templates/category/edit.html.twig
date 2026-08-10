@@ -1,0 +1,25 @@
+{#
+    Template: category/index.html.twig
+    Extends: base_html.twig
+
+    Template pour la page de modification de categorie
+
+    Role:
+        Afficher la page et formulaire de modification de categorie
+
+    Parameters:
+        form - Le formulaire de modification
+#}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Modifier categorie{% endblock %}
+
+{% block body %}
+    <h1>Modifier categorie</h1>
+
+    {{ include('category/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+
+    <a class="btn-outline mx-5 mt-4" href="{{ path('app_category_index') }}">Retourner à la liste</a>
+
+    {{ include('category/_delete_form.html.twig') }}
+{% endblock %}

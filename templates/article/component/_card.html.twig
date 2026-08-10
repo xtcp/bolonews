@@ -1,0 +1,54 @@
+{#
+    Fragment: article/component/_card.html.twig
+    Extends: base_html.twig
+
+    Fragment pour une card d'article
+
+    Parameters:
+        article - L'article a afficher
+#}
+{% set currentRoute = app.request.attributes.get('_route') %}
+
+<article class="article-grid-card">
+    <div class="article__image article-grid-card__image">
+        {% if article.image %}
+            <img src="{{ asset('images/articles/' ~ article.image) }}" alt="{{ article.titre }}">
+        {% endif %}
+    </div>
+    <div class="article-grid-card__body">
+        <a href="{{ path('app_article_index', {category: article.categorie.id}) }}" class="article-categorie w-fit">{{ article.categorie.libelle }}</a>
+        <h3><a class="article-card__titre text-base" href="{{ path('app_article_show', {id: article.id}) }}">{{ article.titre }}</a></h3>
+        <span class="text-sm text-gray-500">{{ article.auteur.pseudo }}</span>
+        <p class="article-card__chapeau">{{ article.chapeau }}</p>
+
+        <a href="{{ path('app_article_show', {id: article.id}) }}" class="article-card__link">
+            Lire la suite
+            <svg class="w-4 h-4"><use xlink:href="#right-arrow"></use></svg>
+        </a>
+
+        <div class="article-card__meta">
+            <a href="{{ path('app_article_show', {id: article.id}) }}#comments">
+                <span class="icon-action">
+                    <svg class="w-4 h-4"><use xlink:href="#chat-bubble"></use></svg>
+                    {{ article.comments|length }}
+                </span>
+            </a>
+            <form class="hidden" method="post" id="like-form-{{ article.id }}" action="{{ path('app_article_toggle_like', {'id': article.id}) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('like' ~ article.id) }}">
+                <input type="hidden" name="currentRoute" value="{{ currentRoute }}">
+            </form>
+            <a href="#"
+                onclick="event.preventDefault(); document.getElementById('like-form-{{ article.id }}').submit();"
+                class="">
+                <span class="icon-action">
+                    {% if article.likes.contains(app.user) %}
+                        <svg class="w-4 h-4"><use xlink:href="#heart-active"></use></svg>
+                    {% else %}
+                        <svg class="w-4 h-4"><use xlink:href="#heart"></use></svg>
+                    {% endif %}
+                    {{ article.likes|length }}
+                </span>
+            </a>
+        </div>
+    </div>
+</article>

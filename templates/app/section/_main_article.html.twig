@@ -1,0 +1,59 @@
+{#
+    Fragment: app/section/_main_article.html.twig
+    Extends: base_html.twig
+
+    Fragment de section pour l'article "a la une"
+
+    Parameters:
+        featuredArticle - Article mis en avant
+
+#}
+{% set currentRoute = app.request.attributes.get('_route') %}
+
+<h2 class="section__titre mt-0">A la une !</h2>
+{% if featuredArticle %}
+    <article class="article-featured mb-10">
+        <div class="article__image article-featured__image">
+            {% if featuredArticle.image %}
+                <img src="{{ asset('images/articles/' ~ featuredArticle.image) }}" alt="{{ featuredArticle.titre }}" class="article-card__image">
+            {% endif %}
+        </div>
+
+        <div class="article-featured__body">
+            <a href="{{ path('app_article_index', {category: featuredArticle.categorie.id}) }}" class="article-categorie w-fit">{{ featuredArticle.categorie.libelle }}</a>
+            <h3><a class="article-card__titre" href="{{ path('app_article_show', {id: featuredArticle.id}) }}">{{ featuredArticle.titre }}</a></h3>
+            <p class="article-card__excerpt">{{ featuredArticle.chapeau }}</p>
+
+            <div class="article-card__auteur">
+                <div class="article-card__auteur-image"></div>
+                <span>{{ featuredArticle.auteur.pseudo }}</span>
+            </div>
+
+            <div class="article-card__meta">
+                <a href="{{ path('app_article_show', {id: featuredArticle.id}) }}#comments">
+                    <span class="icon-action">
+                        <svg class="w-4 h-4"><use xlink:href="#chat-bubble"></use></svg>
+                        {{ featuredArticle.comments|length }}
+                    </span>
+                </a>
+                <form class="hidden" method="post" id="like-form-{{ featuredArticle.id }}" action="{{ path('app_article_toggle_like', {'id': featuredArticle.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('like' ~ featuredArticle.id) }}">
+                    <input type="hidden" name="currentRoute" value="{{ currentRoute }}">
+                </form>
+                <a href="#"
+                    onclick="event.preventDefault(); document.getElementById('like-form-{{ featuredArticle.id }}').submit();"
+                    class="">
+                    <span class="icon-action">
+                        {% if featuredArticle.likes.contains(app.user) %}
+                            <svg class="w-4 h-4"><use xlink:href="#heart-active"></use></svg>
+                        {% else %}
+                            <svg class="w-4 h-4"><use xlink:href="#heart"></use></svg>
+                        {% endif %}
+                        {{ featuredArticle.likes|length }}
+                    </span>
+                </a>
+                <span>publié le {{ featuredArticle.dateheureCreation|date('d-m-Y à H:i') }}</span>
+            </div>
+        </div>
+    </article>
+{% endif %}

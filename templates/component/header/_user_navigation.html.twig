@@ -1,0 +1,24 @@
+{#
+    Fragment: component/_header.html.twig
+    
+    Fragment de composent pour la barre de navigation de connection
+
+    Parameters:
+        currentRoute - La route de navigation actuelle
+
+
+#}
+<div class="user_navigation">
+    {% if app.user %}
+        <a href="{{ path('app_user_index') }}">
+            Mon espace
+            <svg class="w-4 h-4"><use xlink:href="#user"></use></svg>
+        </a>
+        <a href="{{ path('app_logout') }}">
+            Me deconnecter
+        </a>
+    {% else %}
+        <a href="{{ path('app_login') }}" class="{{ currentRoute starts with 'app_index' ? 'nav-active' : '' }}">Se connecter</a>
+        <a href="{{ path('app_register') }}" class="{{ currentRoute starts with 'app_index' ? 'nav-active' : '' }}">M'inscrire</a>
+    {% endif %}
+</div>

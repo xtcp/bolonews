@@ -1,0 +1,81 @@
+Type:
+
+	Blog Collaboratif
+	
+	
+	
+	#Modéles de données:
+	
+	\_A partir de l'enoncé:
+	
+		- Utilisateurs de la plateforme peut eux-mêmes rédiger et publier des articles
+		- Article possede: titre, chapeau, texte, image d'illustration, auteur (associé a un utilisateur),
+			date de création, date de modification, likes (par table de liaison article_likes), commentaire (associé a commentaires), catégorie (associé a categories), publié (oui/non)
+		- Categorie qui se repère par libelle
+		- Commentaires associées a un article qui posséde: date de publication, texte, auteur 
+		- Utilisateur qui possede: email (identifient), pseudo, mot de passe, role, banni (oui ou non)
+	
+	\_A partir de la maquette:
+	
+	#Roles: Utilisateur non connectée, Utilisateur, Administrateur
+	
+	#Autorisations:
+	
+	\_A partir de l'enoncé:
+		
+		Utilisateur non connectée:
+			Rechercher et consulter articles
+			
+		Utilisateur:
+			Créer article, modifier, suprimer et publier/depublier ces propres articles
+			Liker ou enlever le like d'un article
+			Ajouter un commentaire
+			
+		Administrateur:  
+			Supprimer, publier/depublier n'importe quel article
+			Supprimer, banir un utilisateur
+			Toutes les fonctionallités des autres utilisateurs
+		
+	\_A partir de la maquette:
+	
+		Utilisateur non connectée:
+			Peut créer son compte
+		
+		Utilisateur:
+			Peut se deconnecter
+	
+	\_Par principe:
+	
+		Administrateur:  
+			Peut créer, modifier, effacer une categore
+		
+	#Fonctionalités
+	
+	\_A partir de l'enoncé:
+		
+		Article: Consultation, recherche, creation, modification, suppression, publication/depublication
+			Liker, Deliker
+		Utilisateur: Creation, modification, suppression
+		
+		Commentaire: Creation
+		
+		Categorie: 
+		
+	\_A partir de la maquette:
+	
+		Utilisateur: Creation, Connection, Deconnection
+		
+		Contact: Page avec des information de contacte
+		
+		Page principale (avec dernier articles publiés)
+		
+	\_Par principe:
+	
+		Utilisateur: Modification
+		
+		Categorie: Modifier, Ajouter, Supprimer
+		
+		Page principale (avec un article mis en avant, choix de montrer l'article avec plus de likes, ajouté dans les 30 derniers jours)
+		
+		
+		

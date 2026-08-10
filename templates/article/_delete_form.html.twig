@@ -1,0 +1,13 @@
+{#
+    Fragment: article/_delete_form.html.twig
+
+    Fragment pour le formulaire pour effacer un article
+
+    Parameters:
+        article.id - L'id de l'article
+
+#}
+<form method="post" action="{{ path('app_article_delete', {'id': article.id}) }}" onsubmit="return confirm('Vous êtes sur de bien vouloir effacer cette article?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+    <button class="btn mx-3 mt-4">Effacer</button>
+</form>

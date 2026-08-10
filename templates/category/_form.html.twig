@@ -1,0 +1,13 @@
+{#
+    Fragment: category/_form.html.twig
+
+    Fragment pour le formulaire de modification d'une categorie
+
+    Parameters:
+        form - Le formulaire de modification/creation de la categorie
+
+#}
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}

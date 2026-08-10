@@ -1,0 +1,26 @@
+{#
+    Template: user/index.html.twig
+    Extends: base_html.twig
+
+    Template pour la page de compte d'utilisateur
+
+    Role:
+        Afficher la page de compte d'utilisateur avec les action pour gestion de compte et administration, les articles publiés et non publiés
+
+    Parameters:
+        user - L'utilisateur connectée
+        articlesPublies - Les articles publiés
+        articlesNonPublies - Les articles non publiés
+#}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Mon compte{% endblock %}
+
+{% block body %}
+
+    <main class="max-w-7xl mx-auto px-8 py-8">
+        {% include 'user/section/_actions.html.twig' %}
+        {% include 'user/section/_published_articles.html.twig' %}
+        {% include 'user/section/_unpublished_articles.html.twig' %}
+    </main>
+{% endblock %}

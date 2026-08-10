@@ -1,0 +1,26 @@
+{#
+    Template: article/edit.html.twig
+    Extends: base_html.twig
+
+    Template pour la page de modiciation d'un article
+
+    Role:
+        Afficher la page de modification d'un article avec le formulaire et les actions
+
+    Parameters:
+        form - Le formulaire de modification d'article
+
+#}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Modifier Article{% endblock %}
+
+{% block body %}
+    <h1>Modifier Article</h1>
+
+    {{ include('article/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+
+    <a class="btn-outline mx-5 mt-4" href="{{ path('app_article_index') }}">Retourner à la liste</a>
+
+    {{ include('article/_delete_form.html.twig') }}
+{% endblock %}

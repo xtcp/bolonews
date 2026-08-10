@@ -1,0 +1,23 @@
+{#
+    Template: category/index.html.twig
+    Extends: base_html.twig
+
+    Template pour la page de creation de categorie
+
+    Role:
+        Afficher la page et formulaire de creation de categorie
+
+    Parameters:
+        form - Le formulaire de creation
+#}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Créer categorie{% endblock %}
+
+{% block body %}
+    <h1>Créer une nouvelle categorie</h1>
+
+    {{ include('category/_form.html.twig') }}
+
+    <a class="btn-outline mx-5 mt-4" href="{{ path('app_category_index') }}">Retourner à la liste</a>
+{% endblock %}

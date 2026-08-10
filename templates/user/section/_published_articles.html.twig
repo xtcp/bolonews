@@ -1,0 +1,18 @@
+{#
+    Fragment: user/section/_published_articles.html.twig
+    
+    Fragment de section des articlies publiés par l'utilisateur
+
+    Parameters:
+        articlesPublies - Les articles publiés
+
+#}
+
+<h2 class="section__titre">Mes articles Publiés</h2>
+<div class="grid grid-cols-2 gap-6">
+    {% for article in articlesPublies %}
+        {{ include('article/component/_card.html.twig', {article: article}) }}
+    {% else %}
+        <p class="text-gray-500 col-span-2">Vos derniers articles publiés appareteront ici</p>
+    {% endfor %}
+</div>

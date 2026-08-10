@@ -1,0 +1,102 @@
+{#
+    Template: article/show.html.twig
+    Extends: base_html.twig
+
+    Template pour la page d'affichage d'un article
+
+    Role:
+        Afficher la page avec les détails d'un article, les actions et les commentaires
+
+    Parameters:
+        article - L'article a afficher
+        app.user - L'utilisateur connectée
+#}
+{% set currentRoute = app.request.attributes.get('_route') %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ article.titre }}{% endblock %}
+
+{% block body %}
+
+    <main class="max-w-6xl mx-auto px-8 py-8">
+
+        <article class="article-header">
+            <a href="{{ path('app_article_index', {category: article.categorie.id}) }}" class="article-categorie w-fit">{{ article.categorie.libelle }}</a>
+            <h2 class="article-header__titre">{{ article.titre }}</h2>
+
+            <p class="text-sm text-gray-500 mt-3">{{ article.chapeau }}</p>
+            <div class="article__image article-header__image">
+            {% if article.image %}
+                <img src="{{ asset('images/articles/' ~ article.image) }}" alt="{{ article.titre }}">
+            {% endif %}
+            </div>
+            <p class="text-sm text-gray-700 leading-relaxed">{{ article.texte }}</p>
+
+            <div class="article-card__auteur mt-4">
+                <div class="article-card__auteur-image"></div>
+                <span>{{ article.auteur.email }}</span>
+            </div>
+
+            <div class="article-actions">
+                <a href="#comments">
+                    <span class="icon-action">
+                        <svg class="w-4 h-4"><use xlink:href="#chat-bubble"></use></svg>
+                        {{ article.comments|length }}
+                    </span>
+                </a>
+                <form class="hidden" method="post" id="like-form-{{ article.id }}" action="{{ path('app_article_toggle_like', {'id': article.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('like' ~ article.id) }}">
+                    <input type="hidden" name="currentRoute" value="{{ currentRoute }}">
+                </form>
+                <a href="#"
+                        onclick="event.preventDefault(); document.getElementById('like-form-{{ article.id }}').submit();"
+                        class="">
+                    <span class="icon-action">
+                        
+                            {% if article.likes.contains(app.user) %}
+                                <svg class="w-4 h-4"><use xlink:href="#heart-active"></use></svg>
+                            {% else %}
+                                <svg class="w-4 h-4"><use xlink:href="#heart"></use></svg>
+                            {% endif %}
+                            {{ article.likes|length }}
+                        
+                    </span>
+                </a>
+
+            </div>
+            <div class="actions">
+                {% if is_granted("ROLE_ADMIN") %}
+                <div class="actions-section">
+                    <span class="actions-title">Actions Administration</span>
+                    <div class="actions-container">
+                        <form class="hidden" method="post" id="publish-form-{{ article.id }}" action="{{ path('app_article_publish', {'id': article.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('publish' ~ article.id) }}">
+                            <input type="hidden" name="currentRoute" value="{{ currentRoute }}">
+                        </form>
+                        <a href="#"
+                            onclick="event.preventDefault(); document.getElementById('publish-form-{{ article.id }}').submit();"
+                            class="btn-outline w-fit">
+                            {% if article.publie %}
+                                Depublier l'article
+                            {% else %}
+                                Publier l'article
+                            {% endif %}
+                        </a>
+                        <a href="{{ path('app_user_edit') }}" class="btn-outline-blue w-fit">Modifier mon compte</a>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="actions-section">
+                    <span class="actions-title">Actions</span>
+                    <div class="actions-container">
+                        <a href="{{ path('app_user_list') }}" class="btn-outline w-fit">Liste d'utilisateurs</a>
+                        <a href="{{ path('app_category_index') }}" class="btn-outline w-fit">Liste des categories</a>
+                    </div>
+                </div>
+            </div>
+        </article>
+        {% include 'article/section/_comments.html.twig' %}
+        
+    </main>
+{% endblock %}

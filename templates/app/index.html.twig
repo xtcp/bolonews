@@ -1,0 +1,25 @@
+{#
+    Template: app/index.html.twig
+    Extends: base_html.twig
+
+    Template pour la page d'accueil
+
+    Role:
+        Afficher la page d'accueil avec un article mis en avant et les derniéres articles publiées
+
+    Parameters:
+        featuredArticle - Article mis en avant
+        latestArticles - Dérniéres articles publiés
+
+#}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Page principale{% endblock %}
+
+{% block body %}
+
+    <main class="max-w-5xl mx-auto px-8 py-8  w-5/6">
+        {% include 'app/section/_main_article.html.twig' %}
+        {% include 'app/section/_last_articles.html.twig' %}
+    </main>
+{% endblock %}

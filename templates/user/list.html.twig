@@ -1,0 +1,54 @@
+{#
+    Template: user/list.html.twig
+    Extends: base_html.twig
+
+    Template pour la page de la liste d'utilisateurs
+
+    Role:
+        Afficher la page avec la liste d'utilisateurs
+
+    Parameters:
+        users - La liste des utilisateurs
+
+#}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Liste d'utilisateurs{% endblock %}
+
+{% block body %}
+    <h1>Liste d'utilisateurs</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Pseudo</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.email }}</td>
+                <td>{{ user.pseudo }}</td>
+                <td>
+                    <a class="btn-outline-blue" href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier l'utilisateur</a>
+                    <a class="btn-outline-red" href="{{ path('app_user_delete', {'id': user.id}) }}">Supprimer l'utilisateur</a>
+                    <a class="btn-outline-orange" href="{{ path('app_user_ban', {'id': user.id}) }}">
+                    {% if user.banni %}
+                        Débannir l'utilisateur
+                    {% else %}
+                        Bannir l'utilisateur
+                    {% endif %}
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Aucun utilisateur trouvée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

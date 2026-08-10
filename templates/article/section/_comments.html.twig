@@ -1,0 +1,38 @@
+{#
+    Fragment: article/section/_comments.html.twig
+    Extends: base_html.twig
+
+    Fragment pour la section des commentaires d'un article
+    
+    Parameters:
+        app.user - L'utilisateur connectée
+        article.comments - Les commentaires de l'article
+        article.id - L'id de l'article
+#}
+    <section id="comments">
+    <h3 class="section__titre mt-0">Commentaires:</h3>
+
+    {% for comment in article.comments %}
+    <div class="commentaire">
+        <div class="commentaire__info">
+            <div class="commentaire__auteur-image"></div>
+            <span class="commentaire__author">{{ comment.user.email }}</span>
+            <span class="commentaire__date">Posté le : {{ comment.dateheure|date('d-m-Y à H:i') }}</span>
+        </div>
+        <div>
+            <p class="commentaire__text">{{ comment.texte }}</p>
+        </div>
+    </div>
+    {% else %}
+    <p class="text-sm text-gray-400">Aucun commentaire pour le moment.</p>
+    {% endfor %}
+
+    {% if app.user %}
+    <form method="post" action="{{ path('app_comment_new', {id: article.id}) }}" class="commentaire-form mt-6">
+        <label for="comment-text" class="section__titre mt-0 mb-2 block">Ajouter un commentaire</label>
+        <textarea id="comment-text" name="texte" rows="4" placeholder="Votre commentaire..."></textarea>
+        <input type="hidden" name="_token" value="{{ csrf_token('comment' ~ article.id) }}">
+        <button type="submit" class="btn-primary mt-3">Ajouter</button>
+    </form>
+</section>
+{% endif %}

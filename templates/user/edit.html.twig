@@ -1,0 +1,27 @@
+{#
+    Template: user/edit.html.twig
+    Extends: base_html.twig
+
+    Template pour afficher la page de modification d'utilisateur
+
+    Role:
+        Afficher le formulaire de modification d'utilisateur
+
+    Parameters:
+        user - L'utilisateur a modifier
+        form - Le formulaire d'edition d'utilisateur
+
+#}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Modifier utilisateur{% endblock %}
+
+{% block body %}
+    <h1>Modifier utilisateur</h1>
+
+    {{ include('user/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+
+    <a class="btn-outline mx-5 mt-4" href="{{ path('app_user_index') }}">Retourner à la liste</a>
+
+    {{ include('user/_delete_form.html.twig') }}
+{% endblock %}

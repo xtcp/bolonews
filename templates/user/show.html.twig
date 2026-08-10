@@ -1,0 +1,47 @@
+{#
+    Template: user/show.html.twig
+    Extends: base_html.twig
+
+    Template de page des données d'un utilisateur
+
+    Role:
+        Afficher la page avec les données d'un utilisateur
+
+    Parameters:
+        user - L'utilisateur a afficher
+
+#}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Utilisateur{% endblock %}
+
+{% block body %}
+    <h1>Utilisateur</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ user.password }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn-outline mx-5 mt-4" href="{{ path('app_user_index') }}">Retourner à la liste</a>
+
+    <a class="btn-outline mx-3 mt-4" href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier</a>
+
+    {{ include('user/_delete_form.html.twig') }}
+{% endblock %}

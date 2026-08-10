@@ -1,0 +1,47 @@
+{#
+    Template: category/index.html.twig
+    Extends: base_html.twig
+
+    Template pour la page de la liste des categories
+
+    Role:
+        Afficher la liste des categories
+
+    Parameters:
+        categories - La liste des categories
+
+#}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Categories{% endblock %}
+
+{% block body %}
+    <h1>Categories</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Libelle</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for category in categories %}
+            <tr>
+                <td>{{ category.id }}</td>
+                <td>{{ category.libelle }}</td>
+                <td>
+                    <a class="btn-outline-blue" href="{{ path('app_category_edit', {'id': category.id}) }}">Modifier categorie</a>
+                    <a class="btn-outline-red" href="{{ path('app_category_delete', {'id': category.id}) }}">Effacer categorie</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Aucune categorie dans la base de données</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn-outline mx-3 mt-4" href="{{ path('app_category_new') }}">Créer nouvelle categorie</a>
+{% endblock %}

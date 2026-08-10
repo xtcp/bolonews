@@ -1,0 +1,250 @@
+{#
+    Fragment: component/css/tailwind.html.twig
+    
+    Fragment de composent pour le CSS tailwind de la page
+
+#}
+<style type="text/tailwindcss">
+@layer base {
+    /* Base */
+    body {
+        @apply text-black font-merriweather;
+    }
+    h1 {
+        @apply text-3xl font-bold tracking-tight text-gray-900 p-2;
+    }
+
+    h2 {
+        @apply text-2xl font-semibold tracking-tight text-gray-900;
+    }
+
+    h3 {
+        @apply text-xl font-semibold text-gray-900;
+    }
+    /* Header */
+    .header {
+        @apply flex items-center justify-between px-8 py-4 text-sm border-b border-gray-100;
+    }
+    .header__logo {
+        @apply font-semibold text-gray-900;
+    }
+    .nav {
+        @apply flex gap-6;
+    }
+    .nav a {
+        @apply hover:text-gray-500 transition-colors;
+    }
+    .nav-active {
+        @apply text-gray-500;
+    }
+    .user_navigation {
+        @apply flex items-center gap-6;
+    }
+    .user_navigation a {
+        @apply flex items-center gap-2 hover:text-gray-500 transition-colors;
+    }
+    /* Hero */
+    .hero {
+        @apply text-center py-10 border-b border-gray-900;
+    }
+    .hero__titre {
+        @apply text-6xl font-bold tracking-tight;
+    }
+    .hero__soustitre {
+        @apply mt-2;
+    }
+    /* Boutons */
+    .btn {
+        @apply whitespace-nowrap inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors;
+    }
+    .btn-primary {
+        @apply btn bg-gray-900 text-white hover:bg-gray-700;
+    }
+    .btn-outline {
+        @apply btn border border-gray-300 text-gray-700 hover:bg-gray-50;
+    }
+    .btn-outline-red {
+        @apply btn border border-red-300 text-red-500 hover:bg-red-50;
+    }
+    .btn-outline-orange {
+        @apply btn border border-orange-300 text-orange-500 hover:bg-orange-50;
+    }
+    .btn-outline-blue {
+        @apply btn border border-blue-300 text-blue-500 hover:bg-blue-50;
+    }
+    /* Formulaire */
+    form {
+        @apply space-y-5 p-5;
+    }
+
+    form label {
+        @apply mb-1.5 block text-sm font-medium text-gray-700;
+    }
+
+    form input,
+    form textarea,
+    form select {
+        @apply block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition;
+        @apply focus:border-gray-500 focus:ring-2 focus:ring-gray-200;
+    }
+
+    form textarea {
+        @apply min-h-24 resize-y;
+    }
+
+    form input[type="checkbox"] {
+        @apply h-4 w-4 rounded border-gray-300;
+    }
+
+    form input[type="radio"] {
+        @apply h-4 w-4 border-gray-300;
+    }
+
+    form button,
+    form input[type="submit"] {
+        @apply btn-outline mt-4;
+    }
+
+    form .form-error-message {
+        @apply mt-1 text-sm text-red-600;
+    }
+
+    form ul {
+        @apply mt-1 space-y-1;
+    }
+
+    form ul li {
+        @apply text-sm text-red-600;
+    }
+    /* Actions */
+    .actions {
+        @apply font-lato flex items-center gap-12 flex-wrap;
+    }
+    .actions-container {
+        @apply flex items-center gap-2 flex-wrap;
+    }
+
+    /* Categorie */
+    .article-categorie {
+        @apply font-lato inline-block text-xs cursor-pointer hover:bg-gray-200 font-medium text-gray-600 bg-gray-100 border border-gray-200 rounded px-2 py-0.5;
+    }
+
+    /* Card */
+    .article-featured {
+        @apply m-auto flex gap-4 border-b border-gray-100 pb-6;
+    }
+    .article-featured__image {
+        @apply w-3/5 h-80;
+    }
+    .article-featured__body {
+        @apply w-2/5 flex flex-col gap-2;
+    }
+    .article__image {
+        @apply bg-gray-200 rounded-md overflow-hidden;
+    }
+    .article__image > img {
+        @apply w-full h-full object-cover;
+    }
+
+    .article-card__titre {
+        @apply text-2xl font-semibold text-gray-900 leading-snug;
+    }
+    .article-card__chapeau {
+        @apply text-sm text-gray-500;
+    }
+    .article-card__auteur {
+        @apply flex items-center gap-2 text-sm text-gray-700;
+    }
+    .article-card__auteur-image {
+        @apply w-6 h-6 rounded-full bg-gray-300;
+    }
+    .article-card__meta {
+        @apply flex items-center gap-4 text-xs text-gray-400;
+    }
+    .article-card__link {
+        @apply text-sm font-medium text-gray-900 inline-flex items-center gap-1 hover:underline;
+    }
+
+    .article-grid-card {
+        @apply flex gap-2;
+    }
+    .article-grid-card__image {
+        @apply w-[60%] h-full;
+    }
+    
+    .article-grid-card__body {
+        @apply w-2/5 flex flex-col gap-2;
+    }
+    /* Search */
+    .search-bar {
+        @apply flex items-center justify-center gap-2 border-b border-gray-900 pb-3 mb-4;
+    }
+    .search-bar__input {
+        @apply w-96 text-center border-b border-gray-300 focus:outline-none focus:border-gray-900 py-1 text-sm;
+    }
+
+    /* Mon espace */
+    .section__titre {
+        @apply text-base font-semibold text-gray-900 mt-8 mb-3;
+    }
+
+    /* Article */
+    .article-header {
+        @apply border-b border-gray-100 pb-6 mb-6;
+    }
+    .article-header__titre {
+        @apply text-2xl font-bold text-gray-900 mt-2;
+    }
+    .article-header__image {
+        @apply w-full mx-auto my-4;
+    }
+    .article-actions {
+        @apply flex items-center gap-4 text-sm text-gray-400 mt-4;
+    }
+    .icon-action {
+        @apply flex items-center gap-1 hover:text-gray-700 cursor-pointer;
+    }
+
+    /* Commentaires */
+    .commentaire {
+        @apply flex flex-col gap-3 py-4 rounded-md border border-black mb-2 px-2;
+    }
+    .commentaire__info {
+        @apply flex flex-row flex-nowrap gap-3 items-center;
+    }
+    .commentaire__auteur-image {
+        @apply w-8 h-8 rounded-full bg-gray-300 flex-shrink-0;
+    }
+    .commentaire__auteur {
+        @apply text-sm font-semibold text-gray-900;
+    }
+    .commentaire__date {
+        @apply text-xs text-gray-400 ml-2;
+    }
+    .commentaire__text {
+        @apply text-sm text-gray-600 mt-1;
+    }
+    .commentaire-form textarea {
+        @apply w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:border-gray-900;
+    }
+    /* Table */
+    .table {
+        @apply w-full border-collapse;
+    }
+    .table thead th {
+        @apply bg-[var(--color-bg-light)] px-2 py-3 text-left text-base font-semibold uppercase tracking-[0.3px] text-[var(--color-gray)];
+    }
+    .table thead th:first-child {
+        @apply pl-6;
+    }
+    .table tbody td:first-child {
+        @apply pl-6;
+    }
+    .table tbody tr {
+        @apply border-b border-[#f0f0f0];
+    }
+    .table tbody tr:hover {
+        @apply bg-[var(--color-bg-light)];
+    }
+}
+</style>

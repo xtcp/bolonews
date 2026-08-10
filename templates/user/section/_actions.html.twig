@@ -1,0 +1,26 @@
+{#
+    Fragment: user/section/_actions.html.twig
+    
+    Fragment de section de boutons d'actions d'utilisateur et d'administration
+
+    Parameters:
+        user - L'utilisateur connectée
+
+#}
+<div class="actions">
+    <div class="actions-section">
+        <span class="actions-title">Gerer mon compte</span>
+        <div class="actions-container">
+            <a href="{{ path('app_article_new') }}" class="btn-outline w-fit">Créer un nouveau article</a>
+            <a href="{{ path('app_user_edit') }}" class="btn-outline-blue w-fit">Modifier mon compte</a>
+            <a href="{{ path('app_user_delete', {'id': user.id}) }}" class="btn-outline-red w-fit">Supprimer mon compte</a>
+        </div>
+    </div>
+    <div class="actions-section">
+        <span class="actions-title">Administration</span>
+        <div class="actions-container">
+            <a href="{{ path('app_user_list') }}" class="btn-outline w-fit">Liste d'utilisateurs</a>
+            <a href="{{ path('app_category_index') }}" class="btn-outline w-fit">Liste des categories</a>
+        </div>
+    </div>
+</div>

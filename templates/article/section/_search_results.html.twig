@@ -1,0 +1,18 @@
+{#
+    Fragment: article/section/_search_results.html.twig
+    Extends: base_html.twig
+
+    Fragment pour la section de resultats de recherche des articles
+    
+    Parameters:
+        articles - Les dérnieres articles ou articles resultats de la recherche
+#}
+<h2 class="section__titre mt-0">Résultat de votre recherche</h2>
+
+<div class="grid grid-cols-2 gap-6">
+    {% for article in articles %}
+        {{ include('article/component/_card.html.twig', {article: article}) }}
+    {% else %}
+        <p class="text-gray-500 col-span-2">Aucun article trouvé.</p>
+    {% endfor %}
+</div>

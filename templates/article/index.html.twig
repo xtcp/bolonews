@@ -1,0 +1,35 @@
+{#
+    Template: article/index.html.twig
+    Extends: base_html.twig
+
+    Template pour la page d'accueil des articles
+
+    Role:
+        Afficher la barre de recherche et les dérnieres articles ou les articles resultats de recherche
+
+    Parameters:
+        search - search request ($_GET['search'])
+        categories - Liste des categories d'articles
+        articles - Les dérnieres articles ou articles resultats de la recherche
+
+#}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Articles{% endblock %}
+
+{% block body %}
+    {% include 'article/section/_search.html.twig' %}
+    
+    <main class="max-w-5xl mx-auto px-8 py-8">
+        <div class="flex flex-wrap gap-2 justify-center mb-8">
+            {% for category in categories %}
+                <a href="{{ path('app_article_index', {category: category.id}) }}" class="article-categorie">
+                    {{ category.libelle }}
+                </a>
+            {% endfor %}
+        </div>
+
+        {% include 'article/section/_search_results.html.twig' %}
+        
+    </main>
+{% endblock %}

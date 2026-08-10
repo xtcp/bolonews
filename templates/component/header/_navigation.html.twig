@@ -1,0 +1,14 @@
+{#
+    Fragment: component/_header.html.twig
+    
+    Fragment de composent pour la barre de navigation
+
+    Parameters:
+        currentRoute - La route de navigation actuelle
+
+#}
+<nav class="nav">
+    <a href="{{ path('app_index') }}" class="{{ currentRoute starts with 'app_index' ? 'nav-active' : '' }}">Home</a>
+    <a href="{{ path('app_article_index') }}" class="{{ currentRoute starts with 'app_article_index' ? 'nav-active' : '' }}">Articles</a>
+    <a href="" >Contact</a>
+</nav>

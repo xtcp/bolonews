@@ -1,0 +1,22 @@
+{#
+    Fragment: component/_header.html.twig
+    
+    Fragment de composent pour le header
+
+    Role:
+        Afficher le header de la page avec la navigation et la section hero
+
+    Parameters:
+        currentRoute - La route de navigation actuelle
+
+#}
+{% set currentRoute = app.request.attributes.get('_route') %}
+
+<header>
+    <div class="header">
+        <div class="header__logo">Bolonews</div>
+        {% include 'component/header/_navigation.html.twig' %}
+        {% include 'component/header/_user_navigation.html.twig' %}
+    </div>
+    {% include 'component/header/_hero.html.twig' %}
+</header>

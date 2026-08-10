@@ -1,0 +1,13 @@
+{#
+    Fragment: category/_delete_form.html.twig
+
+    Fragment pour le formulaire pour effacer une categorie
+
+    Parameters:
+        category.id - L'id de la categorie
+
+#}
+<form method="post" action="{{ path('app_category_delete', {'id': category.id}) }}" onsubmit="return confirm('Vous êtes sur de bien vouloir effacer cette categorie?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+    <button class="btn">Effacer</button>
+</form>

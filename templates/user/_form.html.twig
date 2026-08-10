@@ -1,0 +1,13 @@
+{#
+    Fragment: user/_form.html.twig
+
+    Fragment pour le formulaire de modification d'utilisateur
+
+    Parameters:
+        form - Le formulaire de modification d'utilisateur
+
+#}
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}

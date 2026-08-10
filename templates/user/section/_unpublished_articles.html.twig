@@ -1,0 +1,18 @@
+{#
+    Fragment: user/section/_unpublished_articles.html.twig
+    
+    Fragment de section des articlies non publiés par l'utilisateur
+
+    Parameters:
+        articlesNonPublies - Les articles non publiés
+
+#}
+
+<h2 class="section__titre">Mes articles Non publiés</h2>
+<div class="grid grid-cols-2 gap-6">
+    {% for article in articlesNonPublies %}
+        {{ include('article/component/_card.html.twig', {article: article}) }}
+    {% else %}
+        <p class="text-gray-500 col-span-2">Vos derniers articles non publiés appareteront ici</p>
+    {% endfor %}
+</div>
