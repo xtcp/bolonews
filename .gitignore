@@ -3,7 +3,11 @@
 .env.dev
 .env.test
 /.vscode/
+/.vscode/settings.json
+/.vscode/sftp.json
 *.lock
+public/.htaccess
+.htaccess
 .editorconfig
 ###> symfony/framework-bundle ###
 /.env.local
