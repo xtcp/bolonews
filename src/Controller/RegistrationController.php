@@ -26,7 +26,7 @@ class RegistrationController extends AbstractController
      *           traite la creation de compte et la redirection vers la page d'accueil
      *
      *  Paramètres :
-     *      form - Les données de requête du formulaire envoyés (email, motdepasse, agreeTerms)
+     *      form - Les données de requête du formulaire envoyés (email, password, agreeTerms)
      * 
      *  Retour :
      *     Response - Template de la page de création d'utilisateur ou espace mon compte si succés
@@ -40,7 +40,7 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var string $motdepasse */
-            $motdepasse = $form->get('motdepasse')->getData();
+            $motdepasse = $form->get('password')->getData();
 
             // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $motdepasse));

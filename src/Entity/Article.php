@@ -18,15 +18,15 @@ class Article
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: "Le titre est obligatoire.")]
     private ?string $titre = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: "Le chapeau ne peut pas être vide.")]
     private ?string $chapeau = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: "Le texte de l'article est obligatoire.")]
     private ?string $texte = null;
 
     #[ORM\Column(length: 255, nullable: true)]

@@ -25,7 +25,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
-    #[Assert\Regex(pattern: '/^[^@]+@[^@]+\.[^@]+$/',message: "Votre adresse email n'est pas valide.")]
+    #[Assert\Email(message: "Le champ email n'est pas un email valide.")]
+    #[Assert\NotBlank(message: "Le champ email ne peut pas être vide.")]
     private ?string $email = null;
 
     /**
@@ -38,7 +39,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: "Le champ mot de passe ne peut pas être vide.")]
     #[Assert\PasswordStrength(minScore: Assert\PasswordStrength::STRENGTH_WEAK)]
     private ?string $password = null;
 

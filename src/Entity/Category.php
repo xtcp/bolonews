@@ -17,7 +17,7 @@ class Category
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: "La libelle de la categorie est obligatoire.")]
     private ?string $libelle = null;
 
     /**

@@ -62,7 +62,7 @@ final class UserController extends AbstractController
      *
      *  Paramètres :
      *      $id - Id de l'utilisateur a modifier
-     *      $form - Les donnés du formulaire envoyés (email, pseudo, motdepasse, roles)
+     *      $form - Les donnés du formulaire envoyés (email, pseudo, password, roles)
      * 
      *  Retour :
      *     Response - Template de la page de modification d'utilisateur ou redirection espace mon compte
@@ -84,7 +84,7 @@ final class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var string|null $motdepasse */
-            $motdepasse = $form->get('motdepasse')->getData();
+            $motdepasse = $form->get('password')->getData();
 
             if (!empty($motdepasse)) {
                 $user->setPassword($userPasswordHasher->hashPassword($user, $motdepasse));
