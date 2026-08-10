@@ -29,6 +29,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
+
 #[Route('/article')]
 final class ArticleController extends AbstractController
 {
@@ -68,6 +69,7 @@ final class ArticleController extends AbstractController
      *     Modifier ou créer un article
      *
      *  Paramètres :
+     *      $user - L'utilisateur connectée qui fait la requête
      *      $request - Les données de la requête (formulaire)
      *      $article - L'article à modifier (vide pour créer)
      *      $entityManager - Gestionnaire de l'entité
@@ -76,7 +78,7 @@ final class ArticleController extends AbstractController
      *  Retour :
      *     Response - Template de la page de modification/création d'article ou redirection vers la page de l'article
      */
-    private function editCreate(Request $request, Article $article, EntityManagerInterface $entityManager, bool $isNew = false): Response
+    private function editCreate(User $user, Request $request, Article $article, EntityManagerInterface $entityManager, bool $isNew = false): Response
     {
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
@@ -94,6 +96,9 @@ final class ArticleController extends AbstractController
                 }
                 // Changer le nom de fichier de l'image avec la valeur retournée par le service imageUploader
                 $article->setImage($nomImage);
+                if ($isNew) $article->setDateheureCreation(new \DateTime());
+                if ($isNew) $article->setAuteur($user);
+                $article->setDateheureModification(new \DateTime());
             }
 
             if ($form->isValid()) {
@@ -126,12 +131,15 @@ final class ArticleController extends AbstractController
         // Pour eviter l'erreur de l'IDE:
         /** @var User $user */
         $user = $this->getUser();
+        if (!$user) {
+            throw new AccessDeniedHttpException("Vous devrez avoir une compte et être connectée pour créer un nouveau article");
+        }
         // Verifier si l'utilisateur est bani et bloquer l'accés
         if ($user->isBanni()) {
             throw new AccessDeniedHttpException("Vous ne pouvez pas effectuer cette action parce que votre compte est bani");
         }
         $article = new Article();
-        return $this->editCreate($request, $article, $entityManager, true);
+        return $this->editCreate($user, $request, $article, $entityManager, true);
     }
     /** 
      *  Rôle :
@@ -149,16 +157,18 @@ final class ArticleController extends AbstractController
         // Pour eviter l'erreur de l'IDE:
         /** @var User $user */
         $user = $this->getUser();
+        if (!$user) {
+            throw new AccessDeniedHttpException("Vous devrez avoir une compte et être connectée pour modifier un article");
+        }
         // Verifier si l'utilisateur est bani et bloquer l'accés
         if ($user->isBanni()) {
             throw new AccessDeniedHttpException("Vous ne pouvez pas effectuer cette action parce que votre compte est bani");
         }
-
         // Verifier si l'auteur de l'article est l'utilisateur connectée ou un administrateur
         if ($article->getAuteur() !== $user && !$this->isGranted('ROLE_ADMIN')) {
             throw new AccessDeniedHttpException("Vous n'avez pas des droits pour modifier cet article");
         }
-        return $this->editCreate($request, $article, $entityManager);
+        return $this->editCreate($user, $request, $article, $entityManager);
     }
     /** 
      *  Rôle :

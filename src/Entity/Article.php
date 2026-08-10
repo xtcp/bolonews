@@ -39,7 +39,7 @@ class Article
     private ?\DateTime $dateheure_modification = null;
 
     #[ORM\Column]
-    private ?bool $publie = null;
+    private ?bool $publie = false;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[ORM\JoinColumn(nullable: false)]

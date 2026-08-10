@@ -66,34 +66,32 @@
 
             </div>
             <div class="actions">
-                {% if is_granted("ROLE_ADMIN") %}
+                {% if (app.user.id == article.auteur.id) or is_granted("ROLE_ADMIN") %}
                 <div class="actions-section">
-                    <span class="actions-title">Actions Administration</span>
+                    <span class="actions-title">Actions</span>
+                    <form class="hidden" method="post" id="delete-form-{{ article.id }}" action="{{ path('app_article_delete', {'id': article.id}) }}" onsubmit="return confirm('Vous êtes sur de bien vouloir effacer cette article?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+                    </form>
+                    <form class="hidden" method="post" id="publish-form-{{ article.id }}" action="{{ path('app_article_publish', {'id': article.id}) }}" onsubmit="return confirm('Vous êtes sur de bien vouloir publier cette article?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('publish' ~ article.id) }}">
+                    </form>
                     <div class="actions-container">
-                        <form class="hidden" method="post" id="publish-form-{{ article.id }}" action="{{ path('app_article_publish', {'id': article.id}) }}">
-                            <input type="hidden" name="_token" value="{{ csrf_token('publish' ~ article.id) }}">
-                            <input type="hidden" name="currentRoute" value="{{ currentRoute }}">
-                        </form>
                         <a href="#"
-                            onclick="event.preventDefault(); document.getElementById('publish-form-{{ article.id }}').submit();"
+                            onclick="event.preventDefault(); document.getElementById('publish-form-{{ article.id }}').requestSubmit();"
                             class="btn-outline w-fit">
-                            {% if article.publie %}
+                           {% if article.publie %}
                                 Depublier l'article
                             {% else %}
                                 Publier l'article
                             {% endif %}
-                        </a>
-                        <a href="{{ path('app_user_edit') }}" class="btn-outline-blue w-fit">Modifier mon compte</a>
+                            </a>
+                        <a href="#"
+                            onclick="event.preventDefault(); document.getElementById('delete-form-{{ article.id }}').requestSubmit();"
+                            class="btn-outline w-fit">Effacer l'article</a>
+                        <a href="{{ path('app_article_edit', {id: article.id}) }}" class="btn-outline w-fit">Modifier l'article</a>
                     </div>
                 </div>
                 {% endif %}
-                <div class="actions-section">
-                    <span class="actions-title">Actions</span>
-                    <div class="actions-container">
-                        <a href="{{ path('app_user_list') }}" class="btn-outline w-fit">Liste d'utilisateurs</a>
-                        <a href="{{ path('app_category_index') }}" class="btn-outline w-fit">Liste des categories</a>
-                    </div>
-                </div>
             </div>
         </article>
         {% include 'article/section/_comments.html.twig' %}

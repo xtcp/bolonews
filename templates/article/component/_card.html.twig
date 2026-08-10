@@ -16,7 +16,12 @@
         {% endif %}
     </div>
     <div class="article-grid-card__body">
+        <div class="flex justify-between gap-2">
         <a href="{{ path('app_article_index', {category: article.categorie.id}) }}" class="article-categorie w-fit">{{ article.categorie.libelle }}</a>
+        {% if (app.user.id == article.auteur.id) or is_granted("ROLE_ADMIN") %}
+            <a href="{{ path('app_article_edit', {id: article.id}) }}" class="btn-outline-small w-fit">Editer</a>
+        {% endif %}
+        </div>
         <h3><a class="article-card__titre text-base" href="{{ path('app_article_show', {id: article.id}) }}">{{ article.titre }}</a></h3>
         <span class="text-sm text-gray-500">{{ article.auteur.pseudo }}</span>
         <p class="article-card__chapeau">{{ article.chapeau }}</p>
